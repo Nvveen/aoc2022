@@ -3,7 +3,8 @@ use std::fs;
 static FILENAME: &str = "./one/src/input";
 
 fn main() {
-    let groups = read_groups();
+    let contents = read_file(FILENAME);
+    let groups = read_groups(contents.as_str());
     part_one(&groups);
     part_two(groups);
 }
@@ -29,9 +30,31 @@ fn part_two(mut groups: Vec<i32>) {
     println!("The sum of the top three is {}", sum);
 }
 
-fn read_groups() -> Vec<i32> {
-    println!("Reading file {FILENAME}");
-    let contents = fs::read_to_string(FILENAME).expect("Should have been able to read the input");
+// test the read_groups function
+#[test]
+fn test_read_groups() {
+    // string of 10 random 4 digit numbers per line
+    let contents = "1234
+5678
+9012
+
+3456
+7890
+
+1234
+5678
+9012
+
+3456
+7890
+";
+    // Test read_groups with the contents
+    let groups = read_groups(contents);
+    // Assert that the groups are correct
+    assert_eq!(groups, vec![15924, 11346, 15924, 11346]);
+}
+
+fn read_groups(contents: &str) -> Vec<i32> {
     // Split the input into lines
     let lines = contents.split('\n');
     // Group lines per empty line
@@ -52,4 +75,10 @@ fn read_groups() -> Vec<i32> {
         })
         .0;
     groups
+}
+
+fn read_file(filename: &str) -> String {
+    println!("Reading file {filename}");
+    let contents = fs::read_to_string(filename).expect("Should have been able to read the input");
+    contents
 }
