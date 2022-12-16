@@ -14,7 +14,12 @@
 				"path": "/usr/bin/zsh"
 			}
 		}
-	}
+	},
+	"workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/aoc2022,type=bind",
+	"runArgs": [
+		"--name",
+		"aoc2022_devcontainer"
+	]
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
