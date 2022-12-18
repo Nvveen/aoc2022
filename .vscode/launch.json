@@ -114,6 +114,43 @@
             },
             "args": [],
             "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'four'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=four",
+                    "--package=four"
+                ],
+                "filter": {
+                    "name": "four",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'four'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=four",
+                    "--package=four"
+                ],
+                "filter": {
+                    "name": "four",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
         }
     ]
 }

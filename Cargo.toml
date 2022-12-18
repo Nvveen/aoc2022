@@ -1,3 +1,3 @@
 [workspace]
 
-members = ["one", "two", "three"]
+members = ["one", "two", "three", "four"]
