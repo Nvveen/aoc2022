@@ -151,6 +151,43 @@
             },
             "args": [],
             "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'five'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=five",
+                    "--package=five"
+                ],
+                "filter": {
+                    "name": "five",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'five'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=five",
+                    "--package=five"
+                ],
+                "filter": {
+                    "name": "five",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
         }
     ]
 }
