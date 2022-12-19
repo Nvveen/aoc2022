@@ -5,16 +5,20 @@ fn main() {
     let input = &include_str!("input");
 
     // part one
-    let part_one = part_one(input);
+    let part_one = get_top_crates(input, false);
     println!("Part one: {}", part_one);
+
+    // part two
+    let part_two = get_top_crates(input, true);
+    println!("Part two: {}", part_two);
 }
 
-fn part_one(input: &str) -> String {
+fn get_top_crates(input: &str, can_move_multiple: bool) -> String {
     let stacks = input
         .lines()
         .filter(|line| !line.is_empty() || line.starts_with(" 1 "))
         .fold(Vec::new(), |stacks, line| match line {
-            line if line.starts_with("move") => move_crates(line, stacks),
+            line if line.starts_with("move") => move_crates(line, stacks, can_move_multiple),
             _ => create_chunks(line, stacks),
         });
     // get the last item of every stack and turn it into a string
@@ -28,7 +32,11 @@ fn part_one(input: &str) -> String {
  * Moves crates from one stack to another. The line is expected to be in the
  * format "move <count> from <from> to <to>".
  */
-fn move_crates(line: &str, mut stacks: Vec<VecDeque<char>>) -> Vec<VecDeque<char>> {
+fn move_crates(
+    line: &str,
+    mut stacks: Vec<VecDeque<char>>,
+    can_move_multiple: bool,
+) -> Vec<VecDeque<char>> {
     let items: Vec<u32> = line
         .split_whitespace()
         .enumerate()
@@ -38,7 +46,13 @@ fn move_crates(line: &str, mut stacks: Vec<VecDeque<char>>) -> Vec<VecDeque<char
     let (count, from, to) = (items[0], items[1] - 1, items[2] - 1);
     let stack: &mut VecDeque<char> = stacks.get_mut(from as usize).unwrap();
     let crates = stack.split_off(stack.len() - count as usize);
-    let crates = crates.into_iter().rev().collect::<VecDeque<char>>();
+    // if we can't move multiple crates, reverse the crates, because
+    // they are placed one at a time.
+    let crates = if !can_move_multiple {
+        crates.into_iter().rev().collect::<VecDeque<char>>()
+    } else {
+        crates
+    };
     stacks.get_mut(to as usize).unwrap().extend(crates);
     stacks
 }
@@ -63,7 +77,7 @@ fn create_chunks(line: &str, mut stacks: Vec<VecDeque<char>>) -> Vec<VecDeque<ch
 }
 
 #[test]
-fn test_part_one() {
+fn test_get_top_crates() {
     let input = "    [D]
 [N] [C]
 [Z] [M] [P]
@@ -73,5 +87,6 @@ move 1 from 2 to 1
 move 3 from 1 to 3
 move 2 from 2 to 1
 move 1 from 1 to 2";
-    assert_eq!(part_one(input), "CMZ");
+    assert_eq!(get_top_crates(input, false), "CMZ");
+    assert_eq!(get_top_crates(input, true), "MCD");
 }
